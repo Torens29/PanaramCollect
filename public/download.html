@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Node.js</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>Upload file</h1>
+    <form action="/uploadPanaram" method="post" enctype="multipart/form-data">
+        <label>Файл</label><br>
+        <input type="file" name="filesdata" />
+        <div>Название панарамы: </div>
+        <input type="text" name="newNamePanaram" /> <br><br>
+
+        <label>Шаблон</label><br>
+        <input type="file" name="filesdata" />
+        <div>Название шаблона: </div>
+        <input type="text" name="newNameShablon" /> <br><br>
+
+        
+        <input type="submit" value="Send" />
+    </form>
+</body>
+<html>
