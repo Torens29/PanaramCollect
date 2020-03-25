@@ -7,7 +7,10 @@
 <body>
     <h1>Создание панарамы</h1>
     <form action="/uploadPanaram" method="post" enctype="multipart/form-data">
-        <label>Файл (формат jpeg или jpg)</label><br>
+        <label>Нaзвание комнаты</label><br>
+        <input type="text" name="namePanaram"/> <br><br>
+
+        <label>Панарама (формат jpeg или jpg)</label><br>
         <input type="file" name="filesdata" accept="image/jpeg"/> <br><br>
 
         <label>Шаблон(формат png)</label><br>
@@ -16,14 +19,15 @@
 
         <label>Активные зоны</label><br>
 
-       
-
         <div class="activeZones"></div>
         
-        <input type="button" value="Add active zone" class="addActiveZone"> <br><br>
+        <input type="button" value="Add active zone" class="addActiveZone">
+        <input type="button" value="Remove active zone" class="removeActiveZone">
+        <br><br>
+        
 
-        <input type="submit" value="Send"/>
-        <script src="../scripts/addActiveZone.js"></script>
+        <input type="submit" value="Send" id="send"/>
     </form>
+     <script src="../scripts/addActiveZone.js"></script>
 </body>
 <html>

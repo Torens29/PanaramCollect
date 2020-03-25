@@ -3,6 +3,7 @@ const multer  = require("multer");
 const fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
+const pushToDB = require('./public/scripts/db');
 
 let pathOfImg;
  
@@ -40,6 +41,7 @@ app.get("/panaram", function (request, response) {
 // обработка страници загрузки
 app.post("/uploadPanaram", multer({storage:storageConfig}).array("filesdata", 2), urlencodedParser, function (req, res) {
    
+  console.log(req.body, req.files);
   let filesdata = req.files;
     if(!filesdata)
         res.send("Ошибка при загрузке файлов");
@@ -47,6 +49,5 @@ app.post("/uploadPanaram", multer({storage:storageConfig}).array("filesdata", 2)
         res.send("Файлы загружен");
  
 });
-
 
 app.listen(3000);
