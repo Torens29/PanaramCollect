@@ -8,7 +8,7 @@
     <h1>Создание панарамы</h1>
     <form action="/uploadPanaram" method="post" enctype="multipart/form-data">
         <label>Нaзвание комнаты</label><br>
-        <input type="text" name="namePanaram"/> <br><br>
+        <input type="text" name="namePanaram" required/> <br><br>
 
         <label>Панарама (формат jpeg или jpg)</label><br>
         <input type="file" name="filesdata" accept="image/jpeg"/> <br><br>
@@ -16,6 +16,7 @@
         <label>Шаблон(формат png)</label><br>
         <input type="file" name="filesdata" accept="image/png"/>
         <br><br>
+
 
         <label>Активные зоны</label><br>
 

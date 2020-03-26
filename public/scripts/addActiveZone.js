@@ -19,7 +19,7 @@ BtnAddActiveZone.addEventListener('click', () => {
             <option value="Описание" selected>Описание</option>
             <option value="Переход к другой панараме">Переход к другой панараме</option>
         </select>
-        <input type='text' id='discribe${i}'/>
+        <input type='text' id='discribe${i}' name='discribe${i}' required/>
         <br><br>`;
     activeZones.appendChild(divRGB);
     console.log(divRGB);
@@ -43,6 +43,7 @@ function change(i) {
         let inputText = document.createElement('input');
         inputText.type = "text";
         inputText.id = `#discribe${i}`;
+        inputText.name= `discribe${i}`;
         console.log(document.querySelector(`typeOfZone${i}`));
         document.querySelector(`#typeOfZone${i}`).after(inputText);
     }

@@ -41,12 +41,36 @@ app.get("/panaram", function (request, response) {
 // обработка страници загрузки
 app.post("/uploadPanaram", multer({storage:storageConfig}).array("filesdata", 2), urlencodedParser, function (req, res) {
    
-  console.log(req.body, req.files);
   let filesdata = req.files;
     if(!filesdata)
-        res.send("Ошибка при загрузке файлов");
+      res.send("Ошибка при загрузке файлов, проверти выбраны ли файлы");
     else
-        res.send("Файлы загружен");
+      dataOfPanaram = {
+              name: req.body.namePanaram,
+              texture: req.files[0].path,
+              stencil: req.files[1].path,
+              
+            };
+      //преобразование в строковый RGB формат
+      i = 1, RGB = '', flag=0;
+      for(let key in req.body){
+        if(key != `discribe${i}` && key != 'namePanaram'){
+           
+          flag++;
+          if(flag != 3)  RGB += req.body[key]  + ',';
+          else RGB += req.body[key];
+          console.log('rgb = '+RGB );
+
+        } else if(key != 'namePanaram'){
+            dataOfPanaram[RGB] = req.body[key];
+            console.log('dataOfPanaram[RGB] = '+RGB);
+            RGB='';
+            i++;
+        }
+      }
+      console.log(dataOfPanaram);
+      pushToDB(dataOfPanaram);
+      res.send("Файлы загружен");
  
 });
 
