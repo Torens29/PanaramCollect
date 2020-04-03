@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список панорам</title>
+</head>
+<body>
+    <h1>Список панорам</h1>
+    <div class="listOfPanoram">div</div>
+    {{#each collections}}
+        <li class="nameOfExcursion">{{this}}</li>
+    {{/each}}
+    <script >
+        document.addEventListener("click", function(e) {
+            console.log(e.target);
+            console.log(e);
+             if (e.target.classList.contains('nameOfExcursion')) {
+                 
+             }
+        });
+  </script>
+</body>
+</html>

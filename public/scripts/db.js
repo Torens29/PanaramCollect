@@ -4,9 +4,9 @@ let pushToDB = function(json){
     // создаем объект MongoClient и передаем ему строку подключения
     const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
     mongoClient.connect(function(err, client){
-    
+        console.log('File DB: ' + json);
         const db = client.db("panaramsbd");
-        const collection = db.collection("panarams");
+        const collection = db.collection(json.nameCollection);
         //let user = {name: "Tom", age: 23};
         collection.insertOne(json, function(err, result){
             
