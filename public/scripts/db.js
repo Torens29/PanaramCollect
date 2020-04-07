@@ -7,7 +7,6 @@ let pushToDB = function(json){
         console.log('File DB: ' + json);
         const db = client.db("panaramsbd");
         const collection = db.collection(json.nameCollection);
-        //let user = {name: "Tom", age: 23};
         collection.insertOne(json, function(err, result){
             
             if(err){ 

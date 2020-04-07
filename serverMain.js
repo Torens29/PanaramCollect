@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
 const pushToDB = require('./public/scripts/db');
-const outputNameCollections = require('./public/scripts/dbOutputNameColl');
+const dbOutputNameColl = require('./public/scripts/dbOutputNameColl');
 
 let pathOfImg;
  
@@ -35,8 +35,11 @@ app.get("/download", function (request, response) {
 });
 
 
-app.get("/panoram", function (request, response) {
-  response.redirect("panaram.html");
+app.post("/panoram", urlencodedParser, function (request, response) {
+
+  if(!request.body) return response.sendStatus(400);
+    console.log( request.body);
+  response.send("<h1>Приняло</h1>");
 });
 
 // обработка страници загрузки
@@ -83,10 +86,10 @@ app.set("view engine", "hbs");
 app.get("/listOfPanoram", function(request, response) {
   
   // const promise = new Promise(function(resolve, reject) {
-  //   outputNameCollections.outputNameCollections();
-  //   console.log('inPromise: '+ outputNameCollections.Name);
+  //   dbOutputNameColl.outputNameCollections();
+  //   console.log('inPromise: '+ dbOutputNameColl.Name);
 
-  //   resolve(outputNameCollections.Name);
+  //   resolve(dbOutputNameColl.Name);
 
   // });
 
@@ -97,8 +100,11 @@ app.get("/listOfPanoram", function(request, response) {
   
   // promise.catch(error => console.log(error.message));
 
-  outputNameCollections.outputNameCollections();
-  response.render('listOfPanoram.hbs', { collections: outputNameCollections.Name });
+  // dbOutputNameColl.outputNameCollections();
+  // response.render('listOfPanoram.hbs', { collections: dbOutputNameColl.Name });
+  
+  dbOutputNameColl.outputNameCollections();
+  response.render('listOfPanoram.hbs', { collections: dbOutputNameColl.Name });
 
 });
 

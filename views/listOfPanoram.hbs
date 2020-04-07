@@ -7,18 +7,33 @@
 </head>
 <body>
     <h1>Список панорам</h1>
-    <div class="listOfPanoram">div</div>
-    {{#each collections}}
-        <li class="nameOfExcursion">{{this}}</li>
-    {{/each}}
-    <script >
-        document.addEventListener("click", function(e) {
-            console.log(e.target);
-            console.log(e);
-             if (e.target.classList.contains('nameOfExcursion')) {
-                 
-             }
-        });
-  </script>
+    {{!-- <div>{{outCollect}}</div> --}}
+    <form action="/panoram" method="POST">
+        {{#each collections}}
+            <input type="submit" name='{{this}}' value="{{this}}"> 
+            {{!-- <button name="{{this}}">{{this}}</button> --}}
+        {{/each}}
+    </form>
+    {{!-- <script >
+    document.addEventListener("click", function(e) {
+        console.log(e.target);
+
+    if (e.target.tagName == 'BUTTON') {
+        console.log('wertyucfvgbh');
+
+        let request = new XMLHttpRequest();        
+        request.open('POST', '/panoram');
+        request.send();
+                
+        request.onload = function() {
+            if (request.status != 200) { 
+                alert(`Ошибка ${request.status}: ${request.statusText}`); 
+            } else { 
+                alert(`Готово, получили ${request.response.length} байт`); 
+        }
+};
+    }
+});
+    </script> --}}
 </body>
 </html>
