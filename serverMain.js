@@ -3,7 +3,7 @@ const multer  = require("multer");
 const fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
-const pushToDB = require('./public/scripts/db');
+const pushToDB = require('./public/scripts/dbPushPanoram');
 const dbOutputNameColl = require('./public/scripts/dbOutputNameColl');
 
 let pathOfImg;
@@ -34,12 +34,18 @@ app.get("/download", function (request, response) {
   response.redirect("download.html");
 });
 
+app.get('/panoram', function(request, response){
+
+response.send('jopa');
+});
 
 app.post("/panoram", urlencodedParser, function (request, response) {
 
   if(!request.body) return response.sendStatus(400);
-    console.log( request.body);
-  response.send("<h1>Приняло</h1>");
+  console.log( request.body);
+  // Object.keys(request.body
+  response.redirect('/panoram.html');
+
 });
 
 // обработка страници загрузки
