@@ -20,40 +20,42 @@ let raycaster = new THREE.Raycaster();
 let canvas = document.createElement('canvas');
 let ctx = canvas.getContext('2d');
 
+import {panoramsData} from './dbOutputPanoram.js';
 
+let namePanoram = document.getElementsByTagName('title');
+console.log('namePanoram' + namePanoram[0].innerHTML);
+// objects = {
+//     room1: {
+//         texture: "./img/room1.jpg",
+//         stencil: "./img/shablon_room1.png",
+//         "255,0,0": "Розетка 1",
+//         "245,0,0": "Окно 1",
+//         "235,0,0": "Лоток",
+//         "225,0,0": "Коробка",
+//         "215,0,0": "Ящик стола",
+//         "205,0,0": "Розетка 2",
+//         "195,0,0": "Камин",
+//         "185,0,0": "Окно 2",
+//         "175,0,0": function(){
+//             here = objects.room2;
+//             init(here);
+//         },
+//         "165,0,0": "Стол"
+//     },
+//     room2: {
+//         texture: "../img/room2.jpg",
+//         stencil: '../img/shabl_room2.png',
+//         "235,0,0": "Пятно",
+//         "230,0,0": function(){
+//             here = objects.room1;
+//             init(here);
+//         }
+//     }
+// };
 
-objects = {
-    room1: {
-        texture: "./img/room1.jpg",
-        stencil: "./img/shablon_room1.png",
-        "255,0,0": "Розетка 1",
-        "245,0,0": "Окно 1",
-        "235,0,0": "Лоток",
-        "225,0,0": "Коробка",
-        "215,0,0": "Ящик стола",
-        "205,0,0": "Розетка 2",
-        "195,0,0": "Камин",
-        "185,0,0": "Окно 2",
-        "175,0,0": function(){
-            here = objects.room2;
-            init(here);
-        },
-        "165,0,0": "Стол"
-    },
-    room2: {
-        texture: "../img/room2.jpg",
-        stencil: '../img/shabl_room2.png',
-        "235,0,0": "Пятно",
-        "230,0,0": function(){
-            here = objects.room1;
-            init(here);
-        }
-    }
-};
+//   here = objects.room2;
 
-  here = objects.room2;
-
-  init(here);
+  init(panoramsData(namePanoram[0].innerHTML));
 
   function init(json) {
     //   objects = json.objects;

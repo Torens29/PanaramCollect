@@ -6,7 +6,8 @@ const bodyParser = require("body-parser");
 const pushToDB = require('./public/scripts/dbPushPanoram');
 const dbOutputNameColl = require('./public/scripts/dbOutputNameColl');
 
-let pathOfImg;
+//use hbs
+app.set("view engine", "hbs");
  
 //const upload = multer({dest:"./uploads"});
 //app.use(express.static(__dirname));
@@ -34,17 +35,19 @@ app.get("/download", function (request, response) {
   response.redirect("download.html");
 });
 
-app.get('/panoram', function(request, response){
 
-response.send('jopa');
+
+app.get('/panoram', function(request,response){
+  
 });
 
 app.post("/panoram", urlencodedParser, function (request, response) {
 
   if(!request.body) return response.sendStatus(400);
+  console.log('post');
   console.log( request.body);
   // Object.keys(request.body
-  response.redirect('/panoram.html');
+  response.render('panoram.hbs', {nameCollection:  Object.keys(request.body)});
 
 });
 
@@ -86,8 +89,6 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
 });
 
 
-//use hbs
-app.set("view engine", "hbs");
 
 app.get("/listOfPanoram", function(request, response) {
   
