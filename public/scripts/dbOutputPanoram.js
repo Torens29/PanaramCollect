@@ -1,4 +1,4 @@
-export  function panoramsData(name){
+module.exports.panoramsData =  function panoramsData(name){
 
     console.log('DB name: '+ name);
         
@@ -14,10 +14,10 @@ export  function panoramsData(name){
         if(err) return console.log(err);
         
         collection.find().toArray(function(err, results){
-                    console.log('DBBBBB: ');
-            console.log(results);
+            console.log('DBBBBB: ');
+            console.log(results[0]);
             client.close();
-            return results;
+            module.exports.panoram = results[0];
         });
     });
 };

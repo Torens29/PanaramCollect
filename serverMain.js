@@ -1,16 +1,18 @@
 const express = require("express");
 const multer  = require("multer");
-const fs = require('fs');
+// const fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
 const pushToDB = require('./public/scripts/dbPushPanoram');
 const dbOutputNameColl = require('./public/scripts/dbOutputNameColl');
+const dbOutputPanoram = require('./public/scripts/dbOutputPanoram');
 
 //use hbs
 app.set("view engine", "hbs");
  
-//const upload = multer({dest:"./uploads"});
+const upload = multer({dest:"./uploads"});
 //app.use(express.static(__dirname));
+
 
 const storageConfig = multer.diskStorage({
   destination: (req, file, cb) =>{
@@ -36,15 +38,29 @@ app.get("/download", function (request, response) {
 });
 
 
+app.post('/getDataColl',multer().none(), function(request, response){
+  console.log('post');
 
-app.get('/panoram', function(request,response){
+  const promise1 = new Promise(function(resolve, reject) {
+    
+      console.log(request.body.nameColl);
+      dbOutputPanoram.panoramsData(request.body.nameColl);
+      resolve();
+  });
   
+  promise1.then(function() {
+    console.log(dbOutputPanoram.panoram);
+    response.send(dbOutputPanoram.panoram);
+  });
+});
+
+
+app.get('/panoram', function(request,response){  
 });
 
 app.post("/panoram", urlencodedParser, function (request, response) {
 
   if(!request.body) return response.sendStatus(400);
-  console.log('post');
   console.log( request.body);
   // Object.keys(request.body
   response.render('panoram.hbs', {nameCollection:  Object.keys(request.body)});
@@ -53,7 +69,7 @@ app.post("/panoram", urlencodedParser, function (request, response) {
 
 // обработка страници загрузки
 app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2), urlencodedParser, function (req, res) {
-   
+  console.log('post uploadPanoram: ');
   let filesdata = req.files;
     if(!filesdata)
       res.send("Ошибка при загрузке файлов, проверти выбраны ли файлы");
@@ -87,8 +103,6 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
       res.send("Файлы загружен");
  
 });
-
-
 
 app.get("/listOfPanoram", function(request, response) {
   
