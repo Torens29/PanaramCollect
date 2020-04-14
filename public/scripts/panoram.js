@@ -33,7 +33,7 @@ xhr.send(formData);
 xhr.onload = () => {
     console.log('ONLOAD');
     let panoramData = JSON.parse(xhr.response);
-    panoramData.texture = '../' +panoramData.texture;
+    panoramData.texture = '../' + panoramData.texture;
     panoramData.stencil = '../' + panoramData.stencil;
     console.log(panoramData);
 

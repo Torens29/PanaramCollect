@@ -1,22 +1,33 @@
 const express = require("express");
 const multer  = require("multer");
-// const fs = require('fs');
 const app = express();
 const bodyParser = require("body-parser");
-const pushToDB = require('./public/scripts/dbPushPanoram');
-const dbOutputNameColl = require('./public/scripts/dbOutputNameColl');
-const dbOutputPanoram = require('./public/scripts/dbOutputPanoram');
+
+//DB:
+const MongoClient = require("mongodb").MongoClient;
+const url = "mongodb://localhost:27017/";
+const mongoClient = new MongoClient(url, { useNewUrlParser: true });
+let db, dbClient;
+
+mongoClient.connect(function(err, client){
+
+  if(err) return console.log(err);    
+  db = client.db("panaramsbd");
+  dbClient = client;
+  app.listen(3000, function(){
+      console.log("Сервер ожидает подключения...");
+  });
+
+});
 
 //use hbs
 app.set("view engine", "hbs");
  
-const upload = multer({dest:"./public/uploads"});
-//app.use(express.static(__dirname));
 
 
 const storageConfig = multer.diskStorage({
   destination: (req, file, cb) =>{
-      cb(null, "uploads");
+      cb(null, "./public/uploads");
   },
   filename: (req, file, cb) =>{
       cb(null, file.originalname);
@@ -39,19 +50,26 @@ app.get("/download", function (request, response) {
 
 
 app.post('/getDataColl',multer().none(), function(request, response){
-  console.log('post');
-
-  const promise1 = new Promise(function(resolve, reject) {
-    
-      console.log(request.body.nameColl);
-      dbOutputPanoram.panoramsData(request.body.nameColl);
-      resolve();
-  });
   
-  promise1.then(function() {
-    console.log(dbOutputPanoram.panoram);
-    response.send(dbOutputPanoram.panoram);
+  const collection = db.collection(request.body.nameColl);
+
+  collection.find().toArray(function(err, results){
+    if(err) return console.log(err);
+    console.log('DBBBBB: ');
+    console.log(results[0]);
+    response.send(results[0]);
   });
+  // const promise1 = new Promise(function(resolve, reject) {
+    
+  //     console.log(request.body.nameColl);
+  //     dbOutputPanoram.panoramsData(request.body.nameColl);
+  //     resolve();
+  // });
+  
+  // promise1.then(function() {
+  //   console.log(dbOutputPanoram.panoram);
+  //   response.send(dbOutputPanoram.panoram);
+  // });
 });
 
 
@@ -99,34 +117,32 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
         }
       }
       console.log(dataOfPanaram);
-      pushToDB(dataOfPanaram);
+      // pushToDB(dataOfPanaram);
+      const collection = db.collection(dataOfPanaram.nameCollection);
+        collection.insertOne(dataOfPanaram, function(err, result){
+            if(err){ 
+                return console.log(err);
+            }
+            console.log(result.ops);
+        });
       res.send("Файлы загружен");
  
 });
 
 app.get("/listOfPanoram", function(request, response) {
   
-  // const promise = new Promise(function(resolve, reject) {
-  //   dbOutputNameColl.outputNameCollections();
-  //   console.log('inPromise: '+ dbOutputNameColl.Name);
-
-  //   resolve(dbOutputNameColl.Name);
-
-  // });
-
-  // promise.then((names)=>{
-  //   console.log('inPromise.then: ' + names);
-  //   response.render('listOfPanoram.hbs', { collections: names });
-  // });
-  
-  // promise.catch(error => console.log(error.message));
-
-  // dbOutputNameColl.outputNameCollections();
-  // response.render('listOfPanoram.hbs', { collections: dbOutputNameColl.Name });
-  
-  dbOutputNameColl.outputNameCollections();
-  response.render('listOfPanoram.hbs', { collections: dbOutputNameColl.Name });
-
+  let namesColl = [];
+  db.listCollections().toArray(function(err, results){
+    if (err)  console.log(err);
+    results.forEach((item) =>{
+    namesColl.push(item.name);
+    }); 
+  });
+  console.log('namesColl: '+ namesColl);
+  response.render('listOfPanoram.hbs', { collections: namesColl });
 });
 
-app.listen(3000);
+process.on("SIGINT", () => {
+  dbClient.close();
+  process.exit();
+});
