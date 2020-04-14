@@ -32,7 +32,10 @@ xhr.send(formData);
 
 xhr.onload = () => {
     console.log('ONLOAD');
-    console.log(xhr.response);
+    let panoramData = JSON.parse(xhr.response);
+    panoramData.texture = '../' +panoramData.texture;
+    panoramData.stencil = '../' + panoramData.stencil;
+    console.log(panoramData);
 
 
 
@@ -67,7 +70,7 @@ xhr.onload = () => {
 
     //   here = objects.room2;
 
-    init(xhr.response);
+    init(panoramData);
 
     function init(json) {
         //   objects = json.objects;

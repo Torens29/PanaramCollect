@@ -10,7 +10,7 @@ const dbOutputPanoram = require('./public/scripts/dbOutputPanoram');
 //use hbs
 app.set("view engine", "hbs");
  
-const upload = multer({dest:"./uploads"});
+const upload = multer({dest:"./public/uploads"});
 //app.use(express.static(__dirname));
 
 
