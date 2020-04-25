@@ -142,6 +142,26 @@ app.get("/listOfPanoram", function(request, response) {
   response.render('listOfPanoram.hbs', { collections: namesColl });
 });
 
+app.post("/listOfRelations", multer().none(), function (request, response) {
+
+  console.log(request.body.nameExcursion);
+  const collection = db.collection(request.body.nameExcursion);
+
+  collection.find().toArray(function(err, results){ //не работает фильтр выборки
+    if(err) return console.log(err);
+
+    let nameExcursion = '';
+    let dataOfExcursion = Array.prototype.slice.call(results);
+    
+    console.log(dataOfExcursion.length);
+    dataOfExcursion.forEach((item, index, arr) => {
+      nameExcursion += item.name +',';
+    });
+    response.send(nameExcursion);
+  });
+
+});
+
 process.on("SIGINT", () => {
   dbClient.close();
   process.exit();
