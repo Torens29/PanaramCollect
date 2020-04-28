@@ -100,22 +100,36 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
               
             };
       //преобразование в строковый RGB формат
+
+      console.log(req.body);
+      console.log('typeOfZone1'+ req.body.typeOfZone1);
+      console.log('nameExcursions1: '+ req.body.nameExcursions);
+
       i = 1, RGB = '', flag=0;
       for(let key in req.body){
-        if(key != `discribe${i}` && key != 'namePanaram' && key!='nameCollection'){
-           
+        
+        if(key != `discribe${i}` && key != 'namePanaram' && key!='nameCollection' && key !=`typeOfZone${i}` && key !=`nameExcursions${i}`){
           flag++;
           if(flag != 3)  RGB += req.body[key]  + ',';
           else RGB += req.body[key];
           console.log('rgb = '+ RGB );
-
         } else if(key == `discribe${i}`){
             dataOfPanaram[RGB] = req.body[key];
             console.log('dataOfPanaram[RGB] = '+ RGB);
             RGB='';
             i++;
+        } else if(key == `nameExcursions${i}`){   //если выбрана связь(переход) к др панораме
+          console.log('nameExcursions${i}: ' + req.body[`nameExcursions${i}`]);
+          dataOfPanaram[RGB]= function(){
+                    init(req.body[`nameExcursions${i}`]);
+          };
+          console.log('dataOfPanaram[RGB] = '+ RGB);
+          RGB='';
+          i++;
         }
+        
       }
+
       console.log(dataOfPanaram);
       // pushToDB(dataOfPanaram);
       const collection = db.collection(dataOfPanaram.nameCollection);
@@ -153,7 +167,6 @@ app.post("/listOfRelations", multer().none(), function (request, response) {
     let nameExcursion = '';
     let dataOfExcursion = Array.prototype.slice.call(results);
     
-    console.log(dataOfExcursion.length);
     dataOfExcursion.forEach((item, index, arr) => {
       nameExcursion += item.name +',';
     });
