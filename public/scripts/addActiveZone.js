@@ -53,8 +53,8 @@ function change(i) {
             xhr.onload = function() {
                 console.log(' xhr.response: '+ xhr.response);
                 let select = document.createElement('select');
-                select.id=`nameExcursions${i}`;
-                select.name=`nameExcursions${i}`;
+                select.id = `nameExcursions${i}`;
+                select.name = `nameExcursions${i}`;
 
                 let nameExcursions = xhr.response.split(',');
                 console.log(nameExcursions.length);

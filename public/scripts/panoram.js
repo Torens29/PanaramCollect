@@ -1,7 +1,7 @@
 //import * as THREE from 'js/three.module.js';
 
 let camera, scene, renderer, mesh, material, e, objects,
-      imgData, uv, info, lon = 0, lat = 0, here;
+      imgData, uv, info, lon = 0, lat = 0, rgbPanoram;
 
     //from f. 'init'
     camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 1, 1100);
@@ -20,6 +20,7 @@ let raycaster = new THREE.Raycaster();
 let canvas = document.createElement('canvas');
 let ctx = canvas.getContext('2d');
 
+
 let namePanoram = document.getElementsByTagName('title');
 console.log('namePanoram: ' + namePanoram[0].innerHTML);
 
@@ -33,11 +34,7 @@ xhr.send(formData);
 xhr.onload = () => {
     console.log('ONLOAD');
     let panoramData = JSON.parse(xhr.response);
-    panoramData.texture = '../' + panoramData.texture;
-    panoramData.stencil = '../' + panoramData.stencil;
     console.log(panoramData);
-
-
 
     // objects = {
     //     room1: {
@@ -68,14 +65,16 @@ xhr.onload = () => {
     //     }
     // };
 
-    //   here = objects.room2;
+    rgbPanoram = panoramData.r2;
 
-    init(panoramData);
+    init(panoramData.r2);
 
-    function init(json) {
+    function init(panoram) {
         //   objects = json.objects;
+        panoram.texture = panoram.texture.replace('public','');
+        panoram.stencil = panoram.stencil.replace('public','');
 
-        material = createMaterial(json.texture, json.stencil);
+        material = createMaterial(panoram.texture, panoram.stencil);
         mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
 
@@ -99,7 +98,8 @@ xhr.onload = () => {
 
         function onClick(){
             console.log('dblclick');
-            raycast(event, here);
+            console.log(rgbPanoram);
+            raycast(event, rgbPanoram);
 
         }
 
@@ -171,16 +171,18 @@ xhr.onload = () => {
             let r = imgData.data[off];
             let g = imgData.data[off+1];
             let b = imgData.data[off+2];
-
+            let rgb= ''+r+','+g+','+b;
             
-            let func = here[`${r},${g},${b}`];
+            
+            let func = here[rgb];// here[`${r},${g},${b}`];
             
             if (func && typeof func === 'function') {
                 func();
                 // here[`${r},${g},${b}`]();
-                console.log('1')
+                console.log('1');
             }else{
-                    info.innerHTML = here[`${r},${g},${b}`];
+                    info.innerHTML = here[rgb];   
+                    // info.innerHTML = here[`${r},${g},${b}`];
                     console.log(info.innerHTML);
                     info.style.left = event.clientX + 15 + 'px';
                     info.style.top = event.clientY + 'px';

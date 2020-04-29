@@ -49,27 +49,22 @@ app.get("/download", function (request, response) {
 });
 
 
-app.post('/getDataColl',multer().none(), function(request, response){
+app.post('/getDataColl', multer().none(), function(request, response){
   
   const collection = db.collection(request.body.nameColl);
 
   collection.find().toArray(function(err, results){
     if(err) return console.log(err);
-    console.log('DBBBBB: ');
-    console.log(results[0]);
-    response.send(results[0]);
+    console.log('/getDataColl: ');
+    let arrDataOfPanorams = Array.prototype.slice.call(results);
+    let dataOfPanorams={};
+    arrDataOfPanorams.forEach((item,index,arr) => {
+      
+      dataOfPanorams[item.name] = item;
+    });
+    console.log(dataOfPanorams);
+    response.send(dataOfPanorams);
   });
-  // const promise1 = new Promise(function(resolve, reject) {
-    
-  //     console.log(request.body.nameColl);
-  //     dbOutputPanoram.panoramsData(request.body.nameColl);
-  //     resolve();
-  // });
-  
-  // promise1.then(function() {
-  //   console.log(dbOutputPanoram.panoram);
-  //   response.send(dbOutputPanoram.panoram);
-  // });
 });
 
 
@@ -120,9 +115,12 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
             i++;
         } else if(key == `nameExcursions${i}`){   //если выбрана связь(переход) к др панораме
           console.log('nameExcursions${i}: ' + req.body[`nameExcursions${i}`]);
+
           dataOfPanaram[RGB]= function(){
+                    rgbPanoram = panoramData[`nameExcursions${i}`]; // для отслеживания панарамы(panoram.js)
                     init(req.body[`nameExcursions${i}`]);
           };
+          
           console.log('dataOfPanaram[RGB] = '+ RGB);
           RGB='';
           i++;
@@ -164,7 +162,7 @@ app.post("/listOfRelations", multer().none(), function (request, response) {
   collection.find().toArray(function(err, results){ //не работает фильтр выборки
     if(err) return console.log(err);
 
-    let nameExcursion = '';
+    let nameExcursion = ''; 
     let dataOfExcursion = Array.prototype.slice.call(results);
     
     dataOfExcursion.forEach((item, index, arr) => {
