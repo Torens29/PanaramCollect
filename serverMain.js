@@ -115,12 +115,12 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
             i++;
         } else if(key == `nameExcursions${i}`){   //если выбрана связь(переход) к др панораме
           console.log('nameExcursions${i}: ' + req.body[`nameExcursions${i}`]);
+          let nameExcursions = req.body[`nameExcursions${i}`];
+          dataOfPanaram[RGB]= // rgbPanoram для отслеживания панарамы(panoram.js)
+            `function jump(){
+                    rgbPanoram = panoramData.${nameExcursions};
+            }`;
 
-          dataOfPanaram[RGB]= function(){
-                    rgbPanoram = panoramData[`nameExcursions${i}`]; // для отслеживания панарамы(panoram.js)
-                    init(req.body[`nameExcursions${i}`]);
-          };
-          
           console.log('dataOfPanaram[RGB] = '+ RGB);
           RGB='';
           i++;

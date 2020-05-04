@@ -1,7 +1,7 @@
 //import * as THREE from 'js/three.module.js';
 
 let camera, scene, renderer, mesh, material, e, objects,
-      imgData, uv, info, lon = 0, lat = 0, rgbPanoram;
+      imgData, uv, info, lon = 0, lat = 0, rgbPanoram, panoramData;
 
     //from f. 'init'
     camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 1, 1100);
@@ -33,7 +33,7 @@ xhr.send(formData);
 
 xhr.onload = () => {
     console.log('ONLOAD');
-    let panoramData = JSON.parse(xhr.response);
+    panoramData = JSON.parse(xhr.response);
     console.log(panoramData);
 
     // objects = {
@@ -65,9 +65,9 @@ xhr.onload = () => {
     //     }
     // };
 
-    rgbPanoram = panoramData.r2;
+    rgbPanoram = panoramData.r8;
 
-    init(panoramData.r2);
+    init(panoramData.r8);
 
     function init(panoram) {
         //   objects = json.objects;
@@ -94,14 +94,14 @@ xhr.onload = () => {
         //   addEventListener('touchend', onPointerUp);
         addEventListener('resize', onWindowResize);
         animate();
-        }
+    }
 
-        function onClick(){
-            console.log('dblclick');
-            console.log(rgbPanoram);
-            raycast(event, rgbPanoram);
+    function onClick(){
+        console.log('dblclick');
+        console.log(rgbPanoram);
+        raycast(event, rgbPanoram);
 
-        }
+    }
 
     function createMaterial(img, stencil) {
         let textureLoader = new THREE.TextureLoader();
@@ -173,20 +173,23 @@ xhr.onload = () => {
             let b = imgData.data[off+2];
             let rgb= ''+r+','+g+','+b;
             
-            
-            let func = here[rgb];// here[`${r},${g},${b}`];
-            
-            if (func && typeof func === 'function') {
-                func();
-                // here[`${r},${g},${b}`]();
-                console.log('1');
-            }else{
-                    info.innerHTML = here[rgb];   
-                    // info.innerHTML = here[`${r},${g},${b}`];
-                    console.log(info.innerHTML);
-                    info.style.left = event.clientX + 15 + 'px';
-                    info.style.top = event.clientY + 'px';
-                    info.style.opacity = r+g+b ? 1 : 0;
+            try{
+                window.eval(here[`${r},${g},${b}`]);// here[rgb];
+                console.log(typeof jump);
+                //let func = jump;
+                    console.log(panoramData);
+                    jump();//rgbPanoram, panoramData[r1]);
+                    jump= undefined;
+                    console.log( rgbPanoram);
+                    init(rgbPanoram);
+            } catch(err){
+                console.log(err);
+                info.innerHTML = here[rgb];   
+                // info.innerHTML = here[`${r},${g},${b}`];
+                console.log(info.innerHTML);
+                info.style.left = event.clientX + 15 + 'px';
+                info.style.top = event.clientY + 'px';
+                info.style.opacity = r+g+b ? 1 : 0; 
             }
             // console.log("2");
             // if(r == 230){
@@ -238,4 +241,4 @@ xhr.onload = () => {
         e&&raycast(e);
         renderer.render(scene, camera);
     }
-}
+};
