@@ -1,18 +1,18 @@
 //import * as THREE from 'js/three.module.js';
 
 let camera, scene, renderer, mesh, material, e, objects,
-      imgData, uv, info, lon = 0, lat = 0, rgbPanoram, panoramData;
+      imgData, uv, info, lon = 0, lat = 0, rgbPanoram, panoramData, dbclick = false;
 
-    //from f. 'init'
-    camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 1, 1100);
-    camera.target = new THREE.Vector3(0, 0, 0);
-    scene = new THREE.Scene();
-    let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
-    geometry.scale(-1, 1, 1);
-    renderer = new THREE.WebGLRenderer();
-    info = document.createElement('div');
-      info.id = 'info';
-      document.body.append(info);
+//from f. 'init'
+camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 1, 1100);
+camera.target = new THREE.Vector3(0, 0, 0);
+scene = new THREE.Scene();
+let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
+geometry.scale(-1, 1, 1);
+renderer = new THREE.WebGLRenderer();
+info = document.createElement('div');
+    info.id = 'info';
+    document.body.append(info);
 
 let mouseDown = {};
 let mouse = new THREE.Vector2();
@@ -20,14 +20,13 @@ let raycaster = new THREE.Raycaster();
 let canvas = document.createElement('canvas');
 let ctx = canvas.getContext('2d');
 
-
 let namePanoram = document.getElementsByTagName('title');
 console.log('namePanoram: ' + namePanoram[0].innerHTML);
-
 
 let formData = new FormData();
 formData.append("nameColl", namePanoram[0].innerHTML);
 let xhr = new XMLHttpRequest();
+
 xhr.open("POST", "/getDataColl");
 xhr.send(formData);
 
@@ -98,9 +97,7 @@ xhr.onload = () => {
 
     function onClick(){
         console.log('dblclick');
-        console.log(rgbPanoram);
-        raycast(event, rgbPanoram);
-
+        dbclick = true;
     }
 
     function createMaterial(img, stencil) {
@@ -149,8 +146,8 @@ xhr.onload = () => {
     }
 
     function onPointerStart( event ) {
-        mouseDown.x = event.clientX;
-        mouseDown.y = event.clientY;
+        mouseDown.x = event.clientX //|| event.touches[ 0 ].clientX;
+        mouseDown.y = event.clientY //|| event.touches[ 0 ].clientY;
         mouseDown.lon = lon;
         mouseDown.lat = lat;
     }
@@ -171,21 +168,30 @@ xhr.onload = () => {
             let r = imgData.data[off];
             let g = imgData.data[off+1];
             let b = imgData.data[off+2];
-            let rgb= ''+r+','+g+','+b;
+            // let rgb= ''+r+','+g+','+b;
             
             try{
-                window.eval(here[`${r},${g},${b}`]);// here[rgb];
-                console.log(typeof jump);
-                //let func = jump;
-                    console.log(panoramData);
-                    jump();//rgbPanoram, panoramData[r1]);
-                    jump= undefined;
-                    console.log( rgbPanoram);
-                    init(rgbPanoram);
+                window.eval(here[`${r},${g},${b}`]);// here[rgb];   
+                console.log('typeof jump ' + typeof jump);
+                if( typeof jump == 'function'){
+                    info.innerHTML = 'переход'//here[`${r},${g},${b}`];
+                    info.style.left = event.clientX + 15 + 'px';
+                    info.style.top = event.clientY + 'px';
+                    info.style.opacity = r+g+b ? 1 : 0; 
+
+                    if(dbclick){         
+                        dbclick = false;  
+                        jump();//rgbPanoram, panoramData[r1]);       
+                        jump = undefined;
+                        init(rgbPanoram);
+                    }else jump = undefined;
+                }else info.innerHTML='';
+            
+                
             } catch(err){
                 console.log(err);
-                info.innerHTML = here[rgb];   
-                // info.innerHTML = here[`${r},${g},${b}`];
+                // info.innerHTML = here[rgb];   
+                info.innerHTML = here[`${r},${g},${b}`];
                 console.log(info.innerHTML);
                 info.style.left = event.clientX + 15 + 'px';
                 info.style.top = event.clientY + 'px';
@@ -210,10 +216,10 @@ xhr.onload = () => {
     }
 
     function onPointerMove( event ) {
-        //   raycast(e = event);
+        raycast(e = event, rgbPanoram);
         if (!mouseDown.x) return;
-        let clientX = event.clientX;
-        let clientY = event.clientY;
+        let clientX = event.clientX //|| event.touches[ 0 ].clientX;
+        let clientY = event.clientY //|| event.touches[ 0 ].clientY;
         lon = (mouseDown.x - clientX)*camera.fov/600 + mouseDown.lon;
         lat = (clientY - mouseDown.y)*camera.fov/600 + mouseDown.lat;
         lat = Math.max( - 85, Math.min( 85, lat ) );
@@ -238,7 +244,7 @@ xhr.onload = () => {
         camera.target.y = 0.001*Math.cos(phi);
         camera.target.z = 0.001*Math.sin(phi)*Math.sin(theta);
         camera.lookAt(camera.target);
-        e&&raycast(e);
+        e&&raycast(e, rgbPanoram);
         renderer.render(scene, camera);
     }
 };

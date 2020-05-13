@@ -22,16 +22,24 @@ BtnAddActiveZone.addEventListener('click', () => {
         <input type='text' id='discribe${i}' name='discribe${i}' required/>
         `;
     activeZones.appendChild(divRGB);
-    console.log(divRGB);
 
     selectTypeOfZone = document.querySelector(`#typeOfZone${i}`);
-    console.log(selectTypeOfZone);
 });
 
 BtnRemoveActiveZone.addEventListener('click', () => {
     i--;
     activeZones.lastChild.remove(); 
 });
+
+function changeExcursions(i){
+    if(selectTypeOfZone.options.selectedIndex == 0){
+        let inputExcursions = document.createElement('input');
+        inputExcursions.type = 'text'
+                        //.id = `inputExcursions${i}`
+                        //.name = `inputExcursions${i}`;
+        document.querySelector(`#nameExcursions${i}`).after(inputExcursions);
+    }
+}
 
 function change(i) {
     console.log('onChange= '+ i);
@@ -51,17 +59,21 @@ function change(i) {
             xhr.open('POST', '/listOfRelations');
             xhr.send(formData);
             xhr.onload = function() {
-                console.log(' xhr.response: '+ xhr.response);
-                let select = document.createElement('select');
-                select.id = `nameExcursions${i}`;
-                select.name = `nameExcursions${i}`;
+                selectExcursions = document.createElement('select');
+                selectExcursions.id = `nameExcursions${i}`;
+                selectExcursions.name = `nameExcursions${i}`;
+                
+                selectExcursions.onchange = `changeExcursions(${i})`;
+                
+                // selectExcursions.addEventListener('change', changeExcursions(i));
 
                 let nameExcursions = xhr.response.split(',');
-                console.log(nameExcursions.length);
+                selectExcursions.options[0] = new Option('Переход к','write',true, true);
+
                 for (let j=0; j<nameExcursions.length-1; j++){
-                    select.options[j] = new Option(nameExcursions[j]);
-                }                
-                document.querySelector(`#typeOfZone${i}`).after(select);
+                    selectExcursions.options[j+1] = new Option(nameExcursions[j]);
+                }         
+                document.querySelector(`#typeOfZone${i}`).after(selectExcursions);
                 
             };
         }
@@ -75,9 +87,8 @@ function change(i) {
         inputText.type = "text";
         inputText.id = `discribe${i}`;
         inputText.name= `discribe${i}`;
-        
+        console.log('qweqweqwe');
         document.querySelector(`#typeOfZone${i}`).after(inputText);
     }
 }
-
 
