@@ -32,17 +32,19 @@ BtnRemoveActiveZone.addEventListener('click', () => {
 });
 
 function changeExcursions(i){
-    if(selectTypeOfZone.options.selectedIndex == 0){
+    let selectExcursions = document.querySelector(`#nameExcursions${i}`);
+    if(selectExcursions.options.selectedIndex == 1){
         let inputExcursions = document.createElement('input');
-        inputExcursions.type = 'text'
-                        //.id = `inputExcursions${i}`
-                        //.name = `inputExcursions${i}`;
+        inputExcursions.type = 'text';
+        inputExcursions.id = `inputExcursions${i}`;
+        inputExcursions.name = `inputExcursions${i}`;
         document.querySelector(`#nameExcursions${i}`).after(inputExcursions);
+    }else{
+         document.querySelector(`#inputExcursions${i}`).remove();
     }
 }
 
 function change(i) {
-    console.log('onChange= '+ i);
     if(selectTypeOfZone.options.selectedIndex == 2){
         // добовляется список комнат для связи с данной
         nameExcursion = document.querySelector(`#nameCollection`);
@@ -59,26 +61,21 @@ function change(i) {
             xhr.open('POST', '/listOfRelations');
             xhr.send(formData);
             xhr.onload = function() {
-                selectExcursions = document.createElement('select');
-                selectExcursions.id = `nameExcursions${i}`;
-                selectExcursions.name = `nameExcursions${i}`;
-                
-                selectExcursions.onchange = `changeExcursions(${i})`;
-                
-                // selectExcursions.addEventListener('change', changeExcursions(i));
+                let divSelect = document.createElement('div');
+                divSelect.innerHTML = `<select id="nameExcursions${i}" name="nameExcursions${i}" onchange= 'changeExcursions(${i})'><option disabled selected>Список</option></select>`;
+                document.querySelector(`#typeOfZone${i}`).after(divSelect);
 
+                let selectExcursions = document.querySelector(`#nameExcursions${i}`);                
                 let nameExcursions = xhr.response.split(',');
-                selectExcursions.options[0] = new Option('Переход к','write',true, true);
-
+                
+                selectExcursions.options[1] = new Option('Другой вариант', 'write');
                 for (let j=0; j<nameExcursions.length-1; j++){
-                    selectExcursions.options[j+1] = new Option(nameExcursions[j]);
+                    selectExcursions.options[j+2] = new Option(nameExcursions[j]);
                 }         
                 document.querySelector(`#typeOfZone${i}`).after(selectExcursions);
-                
             };
         }
     } else{
-
         let inputText = document.createElement('input');
         let nameExcursions = document.querySelector(`#nameExcursions${i}`);
         if(nameExcursions){
@@ -87,7 +84,6 @@ function change(i) {
         inputText.type = "text";
         inputText.id = `discribe${i}`;
         inputText.name= `discribe${i}`;
-        console.log('qweqweqwe');
         document.querySelector(`#typeOfZone${i}`).after(inputText);
     }
 }

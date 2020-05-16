@@ -97,8 +97,6 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
       //преобразование в строковый RGB формат
 
       console.log(req.body);
-      console.log('typeOfZone1'+ req.body.typeOfZone1);
-      console.log('nameExcursions1: '+ req.body.nameExcursions);
 
       i = 1, RGB = '', flag=0;
       for(let key in req.body){
