@@ -59,7 +59,6 @@ app.post('/getDataColl', multer().none(), function(request, response){
     let arrDataOfPanorams = Array.prototype.slice.call(results);
     let dataOfPanorams={};
     arrDataOfPanorams.forEach((item,index,arr) => {
-      
       dataOfPanorams[item.name] = item;
     });
     console.log(dataOfPanorams);
@@ -83,6 +82,15 @@ app.post("/panoram", urlencodedParser, function (request, response) {
 // обработка страници загрузки
 app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2), urlencodedParser, function (req, res) {
   console.log('post uploadPanoram: ');
+
+  let collection = db.collection(req.body.nameCollection);
+  collection.find({name: req.body.namePanaram}).toArray(function(err, results){
+    if(results[0] !=undefined ){
+      res.send('Панорама с таким именем была уже создана');
+    }else{
+
+    
+
   let filesdata = req.files;
     if(!filesdata)
       res.send("Ошибка при загрузке файлов, проверти выбраны ли файлы");
@@ -101,34 +109,51 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
       i = 1, RGB = '', flag=0;
       for(let key in req.body){
         
-        if(key != `discribe${i}` && key != 'namePanaram' && key!='nameCollection' && key !=`typeOfZone${i}` && key !=`nameExcursions${i}`){
-          flag++;
-          if(flag != 3)  RGB += req.body[key]  + ',';
-          else RGB += req.body[key];
+        if(key != `discribe${i}` && key != `inputExcursions${i-1}` && key != 'namePanaram' && key!='nameCollection' && key !=`typeOfZone${i}` && key !=`nameExcursions${i}` ){
+          flag++
+          console.log(flag);
+          console.log('key'+ key)
+          if(flag%3 != 0) { RGB += req.body[key]  + ',';}
+          else {RGB += req.body[key];}
           console.log('rgb = '+ RGB );
         } else if(key == `discribe${i}`){
             dataOfPanaram[RGB] = req.body[key];
             console.log('dataOfPanaram[RGB] = '+ RGB);
+            console.log('RGB1: ' +RGB);
             RGB='';
             i++;
         } else if(key == `nameExcursions${i}`){   //если выбрана связь(переход) к др панораме
-          console.log('nameExcursions${i}: ' + req.body[`nameExcursions${i}`]);
-          let nameExcursions = req.body[`nameExcursions${i}`];
+          let nameExcursions;
+          if(req.body[`nameExcursions${i}`] == 'write'){
+             nameExcursions = req.body[`inputExcursions${i}`];
+             console.log('RGB2: ' +RGB);
+          }else {
+             nameExcursions = req.body[`nameExcursions${i}`];
+             console.log('RGB3: ' +RGB);
+          }
+          console.log('nameExcursions${i}: ' + nameExcursions);
+          
           dataOfPanaram[RGB]= // rgbPanoram для отслеживания панарамы(panoram.js)
             `function jump(){
                     rgbPanoram = panoramData.${nameExcursions};
             }`;
 
           console.log('dataOfPanaram[RGB] = '+ RGB);
+          console.log('RGB4: ' +RGB);
+
           RGB='';
+          console.log('RGB5: ' +RGB);
+
           i++;
         }
         
+
       }
+      
 
       console.log(dataOfPanaram);
       // pushToDB(dataOfPanaram);
-      const collection = db.collection(dataOfPanaram.nameCollection);
+      collection = db.collection(dataOfPanaram.nameCollection);
         collection.insertOne(dataOfPanaram, function(err, result){
             if(err){ 
                 return console.log(err);
@@ -136,7 +161,9 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
             console.log(result.ops);
         });
       res.send("Файлы загружен");
- 
+    }
+  });
+      
 });
 
 app.get("/listOfPanoram", function(request, response) {

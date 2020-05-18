@@ -33,7 +33,8 @@ xhr.send(formData);
 xhr.onload = () => {
     console.log('ONLOAD');
     panoramData = JSON.parse(xhr.response);
-    console.log(panoramData);
+    let arrPanoramData = Object.keys(panoramData);
+    console.log(arrPanoramData);
 
     // objects = {
     //     room1: {
@@ -64,9 +65,9 @@ xhr.onload = () => {
     //     }
     // };
 
-    rgbPanoram = panoramData.r8;
-
-    init(panoramData.r8);
+    rgbPanoram = panoramData[arrPanoramData[0]];
+console.log(rgbPanoram)
+    init(rgbPanoram);
 
     function init(panoram) {
         //   objects = json.objects;
