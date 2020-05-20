@@ -4,36 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список панорам</title>
-</head>
-<body>
-    <h1>Список панорам</h1>
-    {{!-- <div>{{outCollect}}</div> --}}
-    <form action="/panoram" method="POST">
-        {{#each collections}}
-            <input type="submit" name='{{this}}' value="{{this}}"> 
-            {{!-- <button name="{{this}}">{{this}}</button> --}}
-        {{/each}}
-    </form>
-    {{!-- <script >
-    document.addEventListener("click", function(e) {
-        console.log(e.target);
-
-    if (e.target.tagName == 'BUTTON') {
-        console.log('wertyucfvgbh');
-
-        let request = new XMLHttpRequest();        
-        request.open('POST', '/panoram');
-        request.send();
-                
-        request.onload = function() {
-            if (request.status != 200) { 
-                alert(`Ошибка ${request.status}: ${request.statusText}`); 
-            } else { 
-                alert(`Готово, получили ${request.response.length} байт`); 
+    <style>
+        body{
+            text-align: center;
+            
         }
-};
-    }
-});
-    </script> --}}
+
+        div{
+            position: relative;
+            margin: 0 auto;
+        }
+
+        h1{
+            color: rgb(3, 233, 250);
+            text-shadow: black 1px 1px 0, black -1px -1px 0, 
+                 black   -1px 1px 0, black 1px -1px 0;
+        }
+        input {
+          background-color: rgb(99, 39, 240);
+          border: inset;
+          color: rgb(179, 250, 244);
+          padding: 20px 34px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 20px;
+          margin: 4px 2px;
+          cursor: pointer;
+          }
+        
+    </style>
+</head>
+<body background="/img/BGMain.jpg">
+    <div>
+        <h1>Список панорам</h1>
+        <form action="/panoram" method="POST">
+            {{#each collections}}
+                <input type="submit" name='{{this}}' value="{{this}}"> 
+            {{/each}}
+        </form>
+    </div>
+    
+  
 </body>
 </html>

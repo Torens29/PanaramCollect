@@ -14,7 +14,7 @@ BtnAddActiveZone.addEventListener('click', () => {
         <abbr title="Red color">R = </abbr><input type="number" value="0" min="0" max="255" name="R${i}">
         <abbr title="Green color">G = </abbr><input type="number" value="0" min="0" max="255"  name="G${i}">
         <abbr title="Blue color">B = </abbr><input type="number" value="0" min="0" max="255"  name="B${i}"> 
-        <select id="typeOfZone${i}" onchange= change(${i}) name='typeOfZone${i}'>
+        <select id="typeOfZone${i}" onchange= change(${i}) name='typeOfZone${i}' class="typeOfActiveZones">
             <option disabled>Тип активной зоны</option>
             <option value="Описание" selected>Описание</option>
             <option value="Переход к другой панараме">Переход к другой панараме</option>
@@ -62,7 +62,7 @@ function change(i) {
             xhr.send(formData);
             xhr.onload = function() {
                 let divSelect = document.createElement('div');
-                divSelect.innerHTML = `<select id="nameExcursions${i}" name="nameExcursions${i}" onchange= 'changeExcursions(${i})'><option disabled selected>Список</option></select>`;
+                divSelect.innerHTML = `<select id="nameExcursions${i}" name="nameExcursions${i}" onchange= 'changeExcursions(${i})' class="typeOfActiveZones"><option disabled selected>Список</option></select>`;
                 document.querySelector(`#typeOfZone${i}`).after(divSelect);
 
                 let selectExcursions = document.querySelector(`#nameExcursions${i}`);                
