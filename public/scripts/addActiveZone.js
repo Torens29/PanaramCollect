@@ -37,6 +37,7 @@ function changeExcursions(i){
         let inputExcursions = document.createElement('input');
         inputExcursions.type = 'text';
         inputExcursions.id = `inputExcursions${i}`;
+        inputExcursions.class = `inputExcursions`;
         inputExcursions.name = `inputExcursions${i}`;
         document.querySelector(`#nameExcursions${i}`).after(inputExcursions);
     }else{

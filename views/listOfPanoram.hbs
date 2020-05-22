@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список панорам</title>
     <style>
+
+        .ListOfPanorams{
+            width: 50%;
+            margin-top: 50px;
+        }
+        
+        .back{
+            position: absolute;
+            left: 10px;
+            {{!-- font-size: 15px; --}}
+        }
+
         body{
             text-align: center;
-            
+            margin: 0px;
         }
 
         div{
@@ -16,33 +28,46 @@
         }
 
         h1{
-            color: rgb(3, 233, 250);
+            font-family: 'Lemonada', cursive;
+            color: white;
             text-shadow: black 1px 1px 0, black -1px -1px 0, 
-                 black   -1px 1px 0, black 1px -1px 0;
+                         black   -1px 1px 0, black 1px -1px 0;
+            background-color:blueviolet;
+            margin-left: 0;
+            font-size: 30px;
         }
         input {
-          background-color: rgb(99, 39, 240);
-          border: inset;
-          color: rgb(179, 250, 244);
-          padding: 20px 34px;
+          background-color: blueviolet;
+          border: outset;
+          color: rgb(255, 255, 255);
+          padding: 5px 8px;
           text-align: center;
           text-decoration: none;
           display: inline-block;
-          font-size: 20px;
+          font-size: 30px;
           margin: 4px 2px;
           cursor: pointer;
+          font-family: 'Balsamiq Sans', cursive;
           }
         
     </style>
 </head>
 <body background="/img/BGMain.jpg">
-    <div>
-        <h1>Список панорам</h1>
-        <form action="/panoram" method="POST">
+    <div class="cont">
+        <div>
+            <input type="button" onclick="history.back();" value="Назад"/ class="back">
+            <h1>Список панорам</h1>
+        </div>
+        
+
+        <div class="ListOfPanorams">
+            <form action="/panoram" method="POST">
             {{#each collections}}
                 <input type="submit" name='{{this}}' value="{{this}}"> 
             {{/each}}
         </form>
+        </div>
+        
     </div>
     
   

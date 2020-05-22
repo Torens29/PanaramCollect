@@ -4,36 +4,46 @@
     <title>Создание панорамы</title>
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css2?family=Lemonada:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
     <style>
 
         .typeOfActiveZones{
             background:  blueviolet;   
-            
-            /* text-shadow: black 1px 1px 0, black -1px -1px 0, 
-                         black   -1px 1px 0, black 1px -1px 0; */
-            color: rgb(179, 250, 244);
+            font-family: 'Balsamiq Sans', cursive;
+            color:white;
             font-size: 16px;
             padding: 7px 10px 7px 10px;
             height: 36px;
+            margin: 0px 10px;
             border:inset;
         }
 
+        .back{
+            position: absolute;
+            left: 10px;
+            font-size: 30px;
+        }
+
+        .inputExcursions{
+            margin: 16px 0px;
+        }
+        
         .downloadCont{
             display: flex;
             display: inline-block;
-            /* float: left; */
-
         }
 
         body{
             text-align: center;
+            margin: 0px;
         }
 
-        label{
-            color: rgb(181, 255, 35);
+        abbr, label{
+            color:white; /*rgb(181, 255, 35); */
             text-shadow: black 1px 1px 0, black -1px -1px 0, 
                          black   -1px 1px 0, black 1px -1px 0;
             font-size: 30px;
+            font-family: 'Balsamiq Sans', cursive;
         }
 
         h1{
@@ -42,6 +52,9 @@
             text-shadow: black 1px 1px 0, black -1px -1px 0, 
                          black   -1px 1px 0, black 1px -1px 0;
             background-color:blueviolet;
+            margin-left: 0;
+            
+            
         }
 
         input {
@@ -55,17 +68,25 @@
           font-size: 15px;
           margin: 4px 2px;
           cursor: pointer;
+          font-family: 'Balsamiq Sans', cursive;
           }
 
         #send{
             font-size: 30px;
+            font-family: 'Lemonada', cursive;
+
         }
+
     </style>
 </head>
 <body background="./img/BGMain.jpg">
-    <h1>Создание панорамы</h1>
+
+    <div>
+        <input type="button" onclick="history.back();" value="Назад"/ class="back">
+        <h1>Создание панорамы</h1>
+    </div>
+
     <form action="/uploadPanoram" method="post" enctype="multipart/form-data">
-        
         
         <label>Нaзвание экскурсии</label><br>
         <input type="text" name="nameCollection" id="nameCollection" required/> <br><br>
