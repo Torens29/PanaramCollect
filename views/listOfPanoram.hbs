@@ -14,7 +14,12 @@
         .back{
             position: absolute;
             left: 10px;
-            {{!-- font-size: 15px; --}}
+            font-size: 30px;    
+        }
+
+        .header{
+            height: 63px;
+            padding-top: 5px;
         }
 
         body{
@@ -28,14 +33,14 @@
         }
 
         h1{
-            font-family: 'Lemonada', cursive;
+           font-family: 'Lemonada', cursive;
             color: white;
             text-shadow: black 1px 1px 0, black -1px -1px 0, 
                          black   -1px 1px 0, black 1px -1px 0;
             background-color:blueviolet;
             margin-left: 0;
-            font-size: 30px;
         }
+
         input {
           background-color: blueviolet;
           border: outset;
@@ -53,23 +58,18 @@
     </style>
 </head>
 <body background="/img/BGMain.jpg">
-    <div class="cont">
-        <div>
-            <input type="button" onclick="history.back();" value="Назад"/ class="back">
-            <h1>Список панорам</h1>
-        </div>
-        
+    
+    <div >
+        <input type="button" onclick="history.back();" value="Назад" class="back">
+        <h1 class="header">Список панорам</h1>
+    </div>
 
-        <div class="ListOfPanorams">
-            <form action="/panoram" method="POST">
+    <div class="ListOfPanorams">
+        <form action="/panoram" method="POST">
             {{#each collections}}
                 <input type="submit" name='{{this}}' value="{{this}}"> 
             {{/each}}
         </form>
-        </div>
-        
     </div>
-    
-  
 </body>
 </html>
