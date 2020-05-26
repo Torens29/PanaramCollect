@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Создание панорамы</title>
+    <title>Создание виртуальной экскурсии</title>
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css2?family=Lemonada:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
@@ -83,7 +83,7 @@
 
     <div>
         <input type="button" onclick="history.back();" value="Назад" class="back">
-        <h1>Создание панорамы</h1>
+        <h1>Создание виртуальной экскурсии</h1>
     </div>
 
     <form action="/uploadPanoram" method="post" enctype="multipart/form-data">
@@ -91,7 +91,7 @@
         <label>Нaзвание экскурсии</label><br>
         <input type="text" name="nameCollection" id="nameCollection" required/> <br><br>
 
-        <label>Нaзвание комнаты</label><br>
+        <label>Нaзвание панорамы</label><br>
         <input type="text" name="namePanaram" required/> <br><br>
         
         <div class="downloadCont">
@@ -113,8 +113,8 @@
 
         <div class="activeZones"></div>
         
-        <input type="button" value="Add active zone" class="addActiveZone">
-        <input type="button" value="Remove active zone" class="removeActiveZone">
+        <input type="button" value="Добавить активную зону" class="addActiveZone">
+        <input type="button" value="Удалить активную зону" class="removeActiveZone">
         <br><br>
         
         <input type="submit" value="Загрузить" id="send"/>
