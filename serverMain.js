@@ -80,28 +80,29 @@ app.post("/panoram", urlencodedParser, function (request, response) {
 });
 
 // обработка страници загрузки
-app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2), urlencodedParser, function (req, res) {
+app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2), urlencodedParser, function (req, response) {
   console.log('post uploadPanoram: ');
 
   let collection = db.collection(req.body.nameCollection);
   collection.find({name: req.body.namePanaram}).toArray(function(err, results){
     if(results[0] !=undefined ){
-      res.send('Панорама с таким именем была уже создана');
+      response.render('afterLoadPanoram.hbs', { resultLouding: 'Панорама с таким именем была уже создана' });
+      //res.send('Панорама с таким именем была уже создана');
     }else{
-
-    
-
-  let filesdata = req.files;
-    if(!filesdata)
-      res.send("Ошибка при загрузке файлов, проверти выбраны ли файлы");
-    else
-      dataOfPanaram = {
+      let filesdata = req.files;
+        if(!filesdata)
+          response.render('afterLoadPanoram.hbs', { resultLouding: 'Ошибка при загрузке файлов, проверти выбраны ли файлы' });
+          //res.send("Ошибка при загрузке файлов, проверти выбраны ли файлы");
+        else{
+           dataOfPanaram = {
               nameCollection: req.body.nameCollection,
               name: req.body.namePanaram,
               texture: req.files[0].path,
               stencil: req.files[1].path,
-              
             };
+        }
+        
+        
       //преобразование в строковый RGB формат
 
       console.log(req.body);
@@ -160,7 +161,8 @@ app.post("/uploadPanoram", multer({storage:storageConfig}).array("filesdata", 2)
             }
             console.log(result.ops);
         });
-      res.send("Файлы загружен");
+      response.render('afterLoadPanoram.hbs', { resultLouding: 'Файлы загружен' });
+      //res.send("Файлы загружен");
     }
   });
       

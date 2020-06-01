@@ -175,7 +175,7 @@ console.log(rgbPanoram)
                 window.eval(here[`${r},${g},${b}`]);// here[rgb];   
                 console.log('typeof jump ' + typeof jump);
                 if( typeof jump == 'function'){
-                    info.innerHTML = 'переход'//here[`${r},${g},${b}`];
+                    info.innerHTML = 'Переход';  //here[`${r},${g},${b}`];
                     info.style.left = event.clientX + 15 + 'px';
                     info.style.top = event.clientY + 'px';
                     info.style.opacity = r+g+b ? 1 : 0; 
@@ -187,8 +187,6 @@ console.log(rgbPanoram)
                         init(rgbPanoram);
                     }else jump = undefined;
                 }else info.innerHTML='';
-            
-                
             } catch(err){
                 console.log(err);
                 // info.innerHTML = here[rgb];   
