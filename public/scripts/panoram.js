@@ -66,7 +66,7 @@ xhr.onload = () => {
     // };
 
     rgbPanoram = panoramData[arrPanoramData[0]];
-console.log(rgbPanoram)
+    console.log(rgbPanoram);
     init(rgbPanoram);
 
     function init(panoram) {
