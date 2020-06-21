@@ -147,8 +147,8 @@ xhr.onload = () => {
     }
 
     function onPointerStart( event ) {
-        mouseDown.x = event.clientX //|| event.touches[ 0 ].clientX;
-        mouseDown.y = event.clientY //|| event.touches[ 0 ].clientY;
+        mouseDown.x = event.clientX; //|| event.touches[ 0 ].clientX;
+        mouseDown.y = event.clientY; //|| event.touches[ 0 ].clientY;
         mouseDown.lon = lon;
         mouseDown.lat = lat;
     }
